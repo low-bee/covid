@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.xiaolong.spider.dao.DatabaseMapper">
+
+
+    <insert id="saveChinaDayAdd" parameterType="java.util.List">
+        insert into china_day_add(localConfirmadd,
+                                  deadRate,
+                                  healRate,
+                                  date,
+                                  dead,
+                                  heal,
+                                  infect,
+                                  localinfectionadd,
+                                  confirm,
+                                  suspect,
+                                  importedCase,
+                                  y) values
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.localConfirmadd},
+            #{item.deadRate},
+            #{item.date},
+            #{item.dead},
+            #{item.heal},
+            #{item.infect},
+            #{item.localinfectionadd},
+            #{item.confirm},
+            #{item.suspect},
+            #{item.importedCase},
+            #{item.y}
+        </foreach>
+
+    </insert>
+</mapper>
