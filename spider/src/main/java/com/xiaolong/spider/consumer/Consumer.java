@@ -11,6 +11,7 @@ import com.xiaolong.spider.dao.DatabaseMapper;
 import com.xiaolong.spider.enumc.LocationRequestPram;
 import com.xiaolong.spider.util.JsonUtil;
 import com.xiaolong.spider.util.URLUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -18,18 +19,21 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
 /**
- * @Description: 生产者，将数据加载到内存中
+ * @Description: 生产者，将数据从网页加载到内存
  * @Author xiaolong
  * @Date 2021/10/24 7:49 下午
  */
 
 @Service
-public class Consumer implements Runnable{
+@Slf4j
+public class Consumer{
 
     Properties myProperties = new Config().getProperties();
 
@@ -38,7 +42,7 @@ public class Consumer implements Runnable{
     @Autowired
     DatabaseMapper databaseMapper;
 
-    @Override
+    @PostConstruct
     public void run() {
         String url = URLUtil.handleUrl(myProperties.getProperty(Constant.SPIDER_LOCATION_URL), LocationRequestPram.chinaDayAddList.getCode());
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
@@ -55,7 +59,7 @@ public class Consumer implements Runnable{
             }
             return null;
         }).collect(Collectors.toList());
-
+        databaseMapper.selectAll();
         databaseMapper.saveChinaDayAdd(chinaDayAddList);
     }
 
@@ -66,8 +70,5 @@ public class Consumer implements Runnable{
         return factory;
     }
 
-    public static void main(String[] args) {
-        new Thread(new Consumer(), "thread-consumer").start();
-    }
 
 }

@@ -17,9 +17,9 @@ public class ChinaDayAdd implements SupperData {
     @JsonProperty("localConfirmadd")
     private Integer localConfirmadd;
     @JsonProperty("deadRate")
-    private String deadRate;
+    private Double deadRate;
     @JsonProperty("healRate")
-    private String healRate;
+    private Double healRate;
     @JsonProperty("date")
     private String date;
     @JsonProperty("dead")

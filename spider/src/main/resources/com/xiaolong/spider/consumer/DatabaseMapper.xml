@@ -17,9 +17,11 @@
                                   suspect,
                                   importedCase,
                                   y) values
-        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
             #{item.localConfirmadd},
             #{item.deadRate},
+            #{item.healRate},
             #{item.date},
             #{item.dead},
             #{item.heal},
@@ -29,6 +31,7 @@
             #{item.suspect},
             #{item.importedCase},
             #{item.y}
+            )
         </foreach>
 
     </insert>

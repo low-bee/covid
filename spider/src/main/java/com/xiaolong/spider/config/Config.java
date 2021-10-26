@@ -1,7 +1,11 @@
 package com.xiaolong.spider.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -12,6 +16,7 @@ import java.util.Properties;
  * @Date 2021/10/24 6:45 下午
  */
 @Slf4j
+@Configuration
 public class Config {
 
     private final Properties properties  = new Properties();

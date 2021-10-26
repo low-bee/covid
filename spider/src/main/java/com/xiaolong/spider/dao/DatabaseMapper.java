@@ -2,6 +2,8 @@ package com.xiaolong.spider.dao;
 
 import com.xiaolong.spider.bean.data.ChinaDayAdd;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,8 +14,11 @@ import java.util.List;
  */
 
 @Mapper
+@Repository
 public interface DatabaseMapper {
 
     void saveChinaDayAdd(List<ChinaDayAdd> chinaDayAddList);
 
+    @Select("select * from china_day_add")
+    List<ChinaDayAdd> selectAll();
 }
