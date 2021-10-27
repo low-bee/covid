@@ -3,7 +3,7 @@
 use covid;
 drop table if exists chain_day;
 CREATE TABLE chain_day(
-	nowConfirm INT NOT NULL AUTO_INCREMENT COMMENT 'nowConfirm',
+	nowConfirm INT NOT NULL COMMENT 'nowConfirm',
 	y VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'y',
 	confirm INT NOT NULL DEFAULT -1 COMMENT 'confirm',
 	deadRate VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'deadRate',
@@ -18,6 +18,5 @@ CREATE TABLE chain_day(
 	healRate VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'healRate',
 	noInfectH5 INT NOT NULL DEFAULT -1 COMMENT 'noInfectH5',
 	localAccConfirm INT NOT NULL DEFAULT -1 COMMENT 'localAccConfirm',
-	dead INT NOT NULL DEFAULT -1 COMMENT 'dead',
-	PRIMARY KEY (nowConfirm)
+	dead INT NOT NULL DEFAULT -1 COMMENT 'dead'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'chain_day';

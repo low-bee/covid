@@ -7,5 +7,5 @@ import com.xiaolong.spider.bean.supper.SupperData;
  * @Author xiaolong
  * @Date 2021/10/24 7:07 下午
  */
-public class NowConfirm implements SupperData {
+public class NowConfirmStatis implements SupperData {
 }

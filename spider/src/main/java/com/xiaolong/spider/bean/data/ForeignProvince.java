@@ -35,5 +35,7 @@ public class ForeignProvince implements SupperData {
     @JsonProperty("heal")
     private Integer heal;
 
+    private String country;
+
 
 }

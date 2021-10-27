@@ -1,8 +1,7 @@
 package com.xiaolong.spider.dao;
 
-import com.xiaolong.spider.bean.data.ChinaDayAdd;
+import com.xiaolong.spider.bean.data.*;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,8 +16,19 @@ import java.util.List;
 @Repository
 public interface DatabaseMapper {
 
-    void saveChinaDayAdd(List<ChinaDayAdd> chinaDayAddList);
+    void saveChinaDayAdd(List<ChinaDayAddList> chinaDayAddList);
 
-    @Select("select * from china_day_add")
-    List<ChinaDayAdd> selectAll();
+    void saveChinaDay(List<ChinaDayList> chinaDayLists);
+
+    void saveNowConfirmStatis(List<NowConfirmStatis> nowConfirmStatis);
+
+    void saveProvinceCompare(List<ProvinceCompare> provinceCompare);
+
+    void saveForeignData(List<FAutoforeignList> fAutoforeignList);
+
+    void saveForeignProvince(List<ForeignProvince> foreignProvince);
+
+    void saveWomAboard(List<WomAboard> womAboard);
+
+    void saveWomWorld(List<WomWorld> womWorld);
 }

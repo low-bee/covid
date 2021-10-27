@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
-public class ChainDay implements SupperData {
+public class ChinaDayList implements SupperData {
 
     @JsonProperty("nowConfirm")
     private Integer nowConfirm;

@@ -1,28 +1,20 @@
 package com.xiaolong.spider.consumer;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xiaolong.spider.bean.data.ChinaDayAdd;
-import com.xiaolong.spider.config.Config;
-import com.xiaolong.spider.constant.Constant;
+import com.xiaolong.spider.bean.data.*;
+import com.xiaolong.spider.bean.supper.SupperData;
 import com.xiaolong.spider.dao.DatabaseMapper;
+import com.xiaolong.spider.enumc.ForeignRequestPram;
 import com.xiaolong.spider.enumc.LocationRequestPram;
-import com.xiaolong.spider.util.JsonUtil;
-import com.xiaolong.spider.util.URLUtil;
+import com.xiaolong.spider.producer.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
-import java.util.Properties;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -35,40 +27,59 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Consumer{
 
-    Properties myProperties = new Config().getProperties();
-
-    RestTemplate restTemplate = new RestTemplate(simpleClientHttpRequestFactory());
 
     @Autowired
     DatabaseMapper databaseMapper;
 
+    @Autowired
+    Producer producer;
+
     @PostConstruct
+    @Transactional
     public void run() {
-        String url = URLUtil.handleUrl(myProperties.getProperty(Constant.SPIDER_LOCATION_URL), LocationRequestPram.chinaDayAddList.getCode());
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
-        JSONObject data = (JSONObject) JsonUtil.string2JSONObj(forEntity.getBody()).get("data");
-        ObjectMapper objectMapper = new ObjectMapper();
-        // 转为一个数据存储对象
-        List<ChinaDayAdd> chinaDayAddList = ((JSONArray) data.getOrDefault("chinaDayAddList", new JSONArray()))
-                .stream().map(Object::toString)
-                .map(jsonStr -> {
-            try {
-                return objectMapper.readValue(jsonStr, ChinaDayAdd.class);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+        // todo 入库之前是否需要删除
+        List<SupperData> data1 = producer.getData(LocationRequestPram.chinaDayAddList.getCode());
+        List<ChinaDayAddList> d1 = data1.stream().map(iter -> (ChinaDayAddList) iter).collect(Collectors.toList());
+        databaseMapper.saveChinaDayAdd(d1);
+
+        List<SupperData> data2 = producer.getData(LocationRequestPram.chinaDayList.getCode());
+        List<ChinaDayList> d2 = data2.stream().map(iter -> (ChinaDayList) iter).collect(Collectors.toList());
+        databaseMapper.saveChinaDay(d2);
+
+//        List<SupperData> data3 = producer.getData(LocationRequestPram.nowConfirmStatis.getCode());
+//        List<NowConfirmStatis> d3 = data3.stream().map(iter -> (NowConfirmStatis) iter).collect(Collectors.toList());
+//        databaseMapper.saveNowConfirmStatis(d3);
+
+//        List<SupperData> data4 = producer.getData(LocationRequestPram.provinceCompare.getCode());
+//        List<ProvinceCompare> d4 = data4.stream().map(iter -> (ProvinceCompare) iter).collect(Collectors.toList());
+//        databaseMapper.saveProvinceCompare(d4);
+
+        List<SupperData> foreignData1 = producer.getForeignData(ForeignRequestPram.FAutoForeignList.getCode());
+        List<FAutoforeignList> fd1 = foreignData1.stream().map(item -> (FAutoforeignList) item).collect(Collectors.toList());
+        databaseMapper.saveForeignData(fd1);
+
+        // 清洗一下数据 country - list<province>
+        List<ForeignProvince> fdp1 = fd1.stream().map(item -> {
+            String country = item.getName();
+            if (item.getForeignProvince() != null){
+                return item.getForeignProvince().stream().filter(Objects::nonNull).peek(
+                        province -> province.setCountry(country)
+                ).collect(Collectors.toList());
+            } else {
+                return null;
             }
-            return null;
-        }).collect(Collectors.toList());
-        databaseMapper.selectAll();
-        databaseMapper.saveChinaDayAdd(chinaDayAddList);
-    }
 
-    public ClientHttpRequestFactory simpleClientHttpRequestFactory(){
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(15000);
-        factory.setReadTimeout(5000);
-        return factory;
-    }
+        }).filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
+        databaseMapper.saveForeignProvince(fdp1);
 
+        List<SupperData> foreignData2 = producer.getForeignData(ForeignRequestPram.WomAboard.getCode());
+        List<WomAboard> fd2 = foreignData2.stream().map(item -> (WomAboard) item).collect(Collectors.toList());
+        databaseMapper.saveWomAboard(fd2);
+
+        List<SupperData> foreignData3 = producer.getForeignData(ForeignRequestPram.WomWorld.getCode());
+        List<WomWorld> fd3 = foreignData3.stream().map(item -> (WomWorld) item).collect(Collectors.toList());
+        databaseMapper.saveWomWorld(fd3);
+
+    }
 
 }

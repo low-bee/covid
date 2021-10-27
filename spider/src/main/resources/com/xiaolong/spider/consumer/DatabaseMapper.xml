@@ -35,4 +35,202 @@
         </foreach>
 
     </insert>
+    <!--    插入一系列的chainDay数据-->
+    <insert id="saveChinaDay" parameterType="java.util.List">
+        insert into chain_day(
+                nowConfirm,
+                y,
+                confirm,
+                deadRate,
+                date,
+                localConfirm,
+                localConfirmH5,
+                nowSevere,
+                noInfect,
+                suspect,
+                heal,
+                importedCase,
+                healRate,
+                noInfectH5,
+                localAccConfirm,
+                dead
+                ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.nowConfirm},
+            #{item.y},
+            #{item.confirm},
+            #{item.deadRate},
+            #{item.date},
+            #{item.localConfirm},
+            #{item.localConfirmH5},
+            #{item.nowSevere},
+            #{item.noInfect},
+            #{item.suspect},
+            #{item.heal},
+            #{item.importedCase},
+            #{item.healRate},
+            #{item.noInfectH5},
+            #{item.localAccConfirm},
+            #{item.dead}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveNowConfirmStatis" parameterType="java.util.List">
+
+    </insert>
+
+    <insert id="saveProvinceCompare">
+    </insert>
+
+
+    <insert id="saveForeignData" parameterType="java.util.List">
+        insert into foreign_country(
+                name,
+                continent,
+                y,
+                date,
+                isUpdated,
+                confirmAdd,
+                confirmAddCut,
+                confirm,
+                suspect,
+                dead,
+                heal,
+                nowConfirm,
+                confirmCompare,
+                nowConfirmCompare,
+                healCompare,
+                deadCompare) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.name},
+            #{item.continent},
+            #{item.y},
+            #{item.date},
+            #{item.isUpdated},
+            #{item.confirm},
+            #{item.confirmAddCut},
+            #{item.confirm},
+            #{item.suspect},
+            #{item.dead},
+            #{item.heal},
+            #{item.nowConfirm},
+            #{item.confirmCompare},
+            #{item.nowConfirmCompare},
+            #{item.healCompare},
+            #{item.deadCompare}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveForeignProvince" parameterType="java.util.List">
+        insert  into foreign_province(
+                name,
+                date,
+                nameMap,
+                isUpdated,
+                confirmAdd,
+                confirmAddCut,
+                confirm,
+                suspect,
+                dead,
+                heal,
+                country
+                ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.name},
+            #{item.date},
+            #{item.nameMap},
+            #{item.isUpdated},
+            #{item.confirmAdd},
+            #{item.confirmAddCut},
+            #{item.confirm},
+            #{item.suspect},
+            #{item.dead},
+            #{item.heal},
+            #{item.country}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveWomAboard" parameterType="java.util.List">
+        insert into wom_aboard(
+                continent,
+                name,
+                confirm,
+                confirmAdd,
+                dead,
+                deadCompare,
+                heal,
+                healCompare,
+                pubDate,
+                y,
+                date,
+                nowConfirm,
+                nowConfirmCompare,
+                confirmAddCut,
+                suspect,
+                confirmCompare
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.continent},
+            #{item.name},
+            #{item.confirm},
+            #{item.confirmAdd},
+            #{item.dead},
+            #{item.deadCompare},
+            #{item.heal},
+            #{item.healCompare},
+            #{item.pubDate},
+            #{item.y},
+            #{item.date},
+            #{item.nowConfirm},
+            #{item.nowConfirmCompare},
+            #{item.confirmAddCut},
+            #{item.suspect},
+            #{item.confirmCompare}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveWomWorld" parameterType="java.util.List">
+        insert into wom_world(
+                pubDate,
+                y,
+                date,
+                nowConfirm ,
+                nowConfirmAdd,
+                confirm,
+                confirmAdd,
+                heal,
+                healAdd,
+                dead,
+                deadAdd,
+                deathrate,
+                curerate,
+                lastUpdateTime
+                ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.pubDate},
+            #{item.y},
+            #{item.date},
+            #{item.nowConfirm},
+            #{item.nowConfirmAdd},
+            #{item.confirm},
+            #{item.confirmAdd},
+            #{item.heal},
+            #{item.healAdd},
+            #{item.dead},
+            #{item.deadAdd},
+            #{item.deathrate},
+            #{item.curerate},
+            #{item.lastUpdateTime}
+            )
+        </foreach>
+    </insert>
 </mapper>

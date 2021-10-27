@@ -5,6 +5,8 @@ import com.xiaolong.spider.bean.supper.SupperData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @Description: 国外国家数据
  * @Author xiaolong
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
-public class ForeignCountry implements SupperData {
+public class FAutoforeignList implements SupperData {
 
     @JsonProperty("name")
     private String name;
@@ -47,7 +49,7 @@ public class ForeignCountry implements SupperData {
     @JsonProperty("deadCompare")
     private Integer deadCompare;
     @JsonProperty("children")
-    private ForeignProvince foreignProvince;
+    private List<ForeignProvince> foreignProvince;
 
 
 }

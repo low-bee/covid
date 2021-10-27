@@ -2,18 +2,18 @@ package com.xiaolong.spider.enumc;
 
 public enum ForeignRequestPram {
 
-    FAutoCountryConfirmAdd(0),
-    WomWorld(1),
-    WomAboard(2),
-    FAutoForeignList(3);
+    FAutoCountryConfirmAdd("FAutoCountryConfirmAdd"),
+    WomWorld("WomWorld"),
+    WomAboard("WomAboard"),
+    FAutoForeignList("FAutoforeignList");
 
-    private int code ;
+    private String code ;
 
-    ForeignRequestPram(int code){
+    ForeignRequestPram(String code){
         this.code = code;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 }
