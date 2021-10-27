@@ -74,7 +74,7 @@ public class Producer {
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
         JSONObject data = (JSONObject) JsonUtil.string2JSONObj(forEntity.getBody()).get("data");
         ObjectMapper objectMapper = new ObjectMapper();
-        if (data.size() == 1){
+        if ("WomWorld".equals(pram)){
             try {
                 List<SupperData> ret = new ArrayList<>();
                 ret.add(objectMapper.readValue(data.getObject(pram, String.class), handlerClassName(pram)));

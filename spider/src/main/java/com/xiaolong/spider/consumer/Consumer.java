@@ -8,11 +8,13 @@ import com.xiaolong.spider.enumc.LocationRequestPram;
 import com.xiaolong.spider.producer.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -27,6 +29,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Consumer{
 
+    private HashMap<String, String> mapTable = new HashMap<>();
+    {
+        mapTable.put(LocationRequestPram.chinaDayAddList.getCode(), "china_day_add");
+        mapTable.put(LocationRequestPram.chinaDayList.getCode(), "china_day");
+        mapTable.put(ForeignRequestPram.FAutoForeignList.getCode(), "foreign_country");
+        mapTable.put(ForeignRequestPram.WomAboard.getCode(), "wom_aboard");
+        mapTable.put(ForeignRequestPram.WomWorld.getCode(), "wom_world");
+    }
 
     @Autowired
     DatabaseMapper databaseMapper;
@@ -36,14 +46,18 @@ public class Consumer{
 
     @PostConstruct
     @Transactional
+    @Scheduled(cron = "0 */60 * * * ?")
     public void run() {
-        // todo 入库之前是否需要删除
+        // 入库之前删除所有的数据
+
         List<SupperData> data1 = producer.getData(LocationRequestPram.chinaDayAddList.getCode());
         List<ChinaDayAddList> d1 = data1.stream().map(iter -> (ChinaDayAddList) iter).collect(Collectors.toList());
+        databaseMapper.deleteTable(mapTable.get(LocationRequestPram.chinaDayAddList.getCode()));
         databaseMapper.saveChinaDayAdd(d1);
 
         List<SupperData> data2 = producer.getData(LocationRequestPram.chinaDayList.getCode());
         List<ChinaDayList> d2 = data2.stream().map(iter -> (ChinaDayList) iter).collect(Collectors.toList());
+        databaseMapper.deleteTable(mapTable.get(LocationRequestPram.chinaDayList.getCode()));
         databaseMapper.saveChinaDay(d2);
 
 //        List<SupperData> data3 = producer.getData(LocationRequestPram.nowConfirmStatis.getCode());
@@ -56,6 +70,7 @@ public class Consumer{
 
         List<SupperData> foreignData1 = producer.getForeignData(ForeignRequestPram.FAutoForeignList.getCode());
         List<FAutoforeignList> fd1 = foreignData1.stream().map(item -> (FAutoforeignList) item).collect(Collectors.toList());
+        databaseMapper.deleteTable(mapTable.get(ForeignRequestPram.FAutoForeignList.getCode()));
         databaseMapper.saveForeignData(fd1);
 
         // 清洗一下数据 country - list<province>
@@ -68,18 +83,20 @@ public class Consumer{
             } else {
                 return null;
             }
-
         }).filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
+        databaseMapper.deleteTable("foreign_province");
         databaseMapper.saveForeignProvince(fdp1);
 
         List<SupperData> foreignData2 = producer.getForeignData(ForeignRequestPram.WomAboard.getCode());
         List<WomAboard> fd2 = foreignData2.stream().map(item -> (WomAboard) item).collect(Collectors.toList());
+        databaseMapper.deleteTable(mapTable.get(ForeignRequestPram.WomAboard.getCode()));
         databaseMapper.saveWomAboard(fd2);
 
         List<SupperData> foreignData3 = producer.getForeignData(ForeignRequestPram.WomWorld.getCode());
         List<WomWorld> fd3 = foreignData3.stream().map(item -> (WomWorld) item).collect(Collectors.toList());
+        databaseMapper.deleteTable(mapTable.get(ForeignRequestPram.WomWorld.getCode()));
         databaseMapper.saveWomWorld(fd3);
-
+        log.info("一次执行完毕");
     }
 
 }

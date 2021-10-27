@@ -37,7 +37,7 @@
     </insert>
     <!--    插入一系列的chainDay数据-->
     <insert id="saveChinaDay" parameterType="java.util.List">
-        insert into chain_day(
+        insert into china_day(
                 nowConfirm,
                 y,
                 confirm,
@@ -233,4 +233,7 @@
             )
         </foreach>
     </insert>
+    <delete id="deleteTable" parameterType="java.lang.String">
+        truncate table ${tableName}
+    </delete>
 </mapper>

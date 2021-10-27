@@ -2,6 +2,8 @@ package com.xiaolong.spider.dao;
 
 import com.xiaolong.spider.bean.data.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +33,6 @@ public interface DatabaseMapper {
     void saveWomAboard(List<WomAboard> womAboard);
 
     void saveWomWorld(List<WomWorld> womWorld);
+
+    void deleteTable(@Param("tableName") String tableName);
 }

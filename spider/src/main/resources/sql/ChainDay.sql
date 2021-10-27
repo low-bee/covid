@@ -1,8 +1,8 @@
 -- auto Generated on 2021-10-24
 -- DROP TABLE IF EXISTS chain_day;
 use covid;
-drop table if exists chain_day;
-CREATE TABLE chain_day(
+drop table if exists china_day;
+CREATE TABLE china_day(
 	nowConfirm INT NOT NULL COMMENT 'nowConfirm',
 	y VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'y',
 	confirm INT NOT NULL DEFAULT -1 COMMENT 'confirm',
