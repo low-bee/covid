@@ -270,4 +270,28 @@
             )
         </foreach>
     </insert>
+    <insert id="saveDataFromWHO" parameterType="java.util.List">
+        insert into who_covid19(
+                dateReported,
+                countryCode,
+                country,
+                wHORegion,
+                newCases,
+                cumulativeCases,
+                newDeaths,
+                cumulativeDeaths
+                )  values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.dateReported},
+            #{item.countryCode},
+            #{item.country},
+            #{item.wHORegion},
+            #{item.newCases},
+            #{item.cumulativeCases},
+            #{item.newDeaths},
+            #{item.cumulativeDeaths}
+            )
+        </foreach>
+    </insert>
 </mapper>

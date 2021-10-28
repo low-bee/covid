@@ -149,3 +149,14 @@ CREATE TABLE IF NOT EXISTS covid19_deaths(
 	influenzaDeaths INT DEFAULT -1 COMMENT 'influenzaDeaths',
 	pneumoniaInfluenzaOrCovid INT DEFAULT -1 COMMENT 'pneumoniaInfluenzaOrCovid'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'covid19_deaths';
+
+CREATE TABLE IF NOT EXISTS who_covid19(
+	dateReported VARCHAR (50) NOT NULL COMMENT 'dateReported',
+	countryCode VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'countryCode',
+	country VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'country',
+	wHORegion VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'wHORegion',
+	newCases INT NOT NULL DEFAULT -1 COMMENT 'newCases',
+	cumulativeCases INT NOT NULL DEFAULT -1 COMMENT 'cumulativeCases',
+	newDeaths INT NOT NULL DEFAULT -1 COMMENT 'newDeaths',
+	cumulativeDeaths INT NOT NULL DEFAULT -1 COMMENT 'cumulativeDeaths'
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'who_covid19';

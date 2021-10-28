@@ -2,6 +2,7 @@ package com.xiaolong.spider.consumer;
 
 import com.xiaolong.spider.bean.data.*;
 import com.xiaolong.spider.bean.foreign.Covid19Deaths;
+import com.xiaolong.spider.bean.foreign.WHOCovid19;
 import com.xiaolong.spider.bean.supper.SupperData;
 import com.xiaolong.spider.dao.DatabaseMapper;
 import com.xiaolong.spider.enumc.ForeignRequestPram;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +103,15 @@ public class Consumer{
         databaseMapper.deleteTable("covid19_deaths");
         databaseMapper.saveDataFromDataCdcGov(dataFromDataCdcGov);
         log.info("年龄数据执行一次完成！");
+
+        try {
+            final List<WHOCovid19> dataFromWHO = producer.getDataFromWHO();
+            databaseMapper.deleteTable("who_covid19");
+            databaseMapper.saveDataFromWHO(dataFromWHO);
+        } catch (IOException e) {
+            log.error("访问WHO数据失败！");
+            e.printStackTrace();
+        }
     }
 
 }
