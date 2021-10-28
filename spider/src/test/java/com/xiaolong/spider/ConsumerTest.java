@@ -16,8 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ConsumerTest {
-
-    Consumer consumer = new Consumer();
+    @Autowired
+    Consumer consumer;
 
     @Test
     public void testIOC(){

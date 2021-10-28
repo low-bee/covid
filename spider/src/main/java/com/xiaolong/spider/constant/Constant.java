@@ -10,4 +10,9 @@ public class Constant {
     public static final String SPIDER_FOREIGN_URL="spider.foreign.url";
     public static final String SPIDER_LOCATION_URL="spider.location.url";
 
+    public static final String SPIDER_FOREIGN_TOKEN="data.cdc.gov.token";
+    public static final String SPIDER_FOREIGN_SECRET="data.cdc.gov.secret";
+
+
+
 }

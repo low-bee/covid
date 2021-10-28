@@ -1,6 +1,8 @@
 package com.xiaolong.spider.dao;
 
 import com.xiaolong.spider.bean.data.*;
+import com.xiaolong.spider.bean.foreign.Covid19Deaths;
+import com.xiaolong.spider.bean.supper.SupperData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -35,4 +37,6 @@ public interface DatabaseMapper {
     void saveWomWorld(List<WomWorld> womWorld);
 
     void deleteTable(@Param("tableName") String tableName);
+
+    void saveDataFromDataCdcGov(List<Covid19Deaths> dataFromDataCdcGov);
 }

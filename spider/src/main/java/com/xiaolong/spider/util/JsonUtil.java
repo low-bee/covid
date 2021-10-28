@@ -1,6 +1,7 @@
 package com.xiaolong.spider.util;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,6 +24,10 @@ public class JsonUtil {
 
     public static JSONObject string2JSONObj(String jsonString){
         return JSONObject.parseObject(jsonString);
+    }
+
+    public static JSONArray string2JsonArray(String jsonString){
+        return JSONObject.parseArray(jsonString);
     }
 
 

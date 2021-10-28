@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xiaolong.spider.bean.foreign.Covid19Deaths;
 import com.xiaolong.spider.bean.supper.SupperData;
+import com.xiaolong.spider.config.Config;
+import com.xiaolong.spider.constant.Constant;
 import com.xiaolong.spider.util.JsonUtil;
 import com.xiaolong.spider.util.URLUtil;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +29,8 @@ import java.util.stream.Collectors;
 @Service
 public class Producer {
 
-    RestTemplate restTemplate = new RestTemplate(simpleClientHttpRequestFactory());
+    private final RestTemplate restTemplate = new RestTemplate(simpleClientHttpRequestFactory());
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<SupperData> getData(String pram){
         // todo 参数校验
@@ -73,7 +77,7 @@ public class Producer {
     private List<SupperData> getSupperData(String pram, String url) {
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
         JSONObject data = (JSONObject) JsonUtil.string2JSONObj(forEntity.getBody()).get("data");
-        ObjectMapper objectMapper = new ObjectMapper();
+
         if ("WomWorld".equals(pram)){
             try {
                 List<SupperData> ret = new ArrayList<>();
@@ -96,4 +100,22 @@ public class Producer {
                     return null;
                 }).collect(Collectors.toList());
     }
+
+    public List<Covid19Deaths> getDataFromDataCdcGov(){
+        String url = "https://data.cdc.gov/resource/9bhg-hcku.json?$$app_token=" + new Config().getProperties().getProperty(Constant.SPIDER_FOREIGN_TOKEN);
+
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
+        JSONArray array = JsonUtil.string2JsonArray(forEntity.getBody());
+
+        return array.stream().map(Object::toString)
+                .map(json -> {
+                    try {
+                        return objectMapper.readValue(json, Covid19Deaths.class);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).collect(Collectors.toList());
+    }
+
 }

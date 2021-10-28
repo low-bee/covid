@@ -1,6 +1,7 @@
 package com.xiaolong.spider.consumer;
 
 import com.xiaolong.spider.bean.data.*;
+import com.xiaolong.spider.bean.foreign.Covid19Deaths;
 import com.xiaolong.spider.bean.supper.SupperData;
 import com.xiaolong.spider.dao.DatabaseMapper;
 import com.xiaolong.spider.enumc.ForeignRequestPram;
@@ -44,10 +45,17 @@ public class Consumer{
     @Autowired
     Producer producer;
 
-    @PostConstruct
+    // @PostConstruct
     @Transactional
     @Scheduled(cron = "0 */60 * * * ?")
     public void run() {
+//        List<SupperData> data3 = producer.getData(LocationRequestPram.nowConfirmStatis.getCode());
+//        List<NowConfirmStatis> d3 = data3.stream().map(iter -> (NowConfirmStatis) iter).collect(Collectors.toList());
+//        databaseMapper.saveNowConfirmStatis(d3);
+
+//        List<SupperData> data4 = producer.getData(LocationRequestPram.provinceCompare.getCode());
+//        List<ProvinceCompare> d4 = data4.stream().map(iter -> (ProvinceCompare) iter).collect(Collectors.toList());
+//        databaseMapper.saveProvinceCompare(d4);
         // 入库之前删除所有的数据
 
         List<SupperData> data1 = producer.getData(LocationRequestPram.chinaDayAddList.getCode());
@@ -59,15 +67,6 @@ public class Consumer{
         List<ChinaDayList> d2 = data2.stream().map(iter -> (ChinaDayList) iter).collect(Collectors.toList());
         databaseMapper.deleteTable(mapTable.get(LocationRequestPram.chinaDayList.getCode()));
         databaseMapper.saveChinaDay(d2);
-
-//        List<SupperData> data3 = producer.getData(LocationRequestPram.nowConfirmStatis.getCode());
-//        List<NowConfirmStatis> d3 = data3.stream().map(iter -> (NowConfirmStatis) iter).collect(Collectors.toList());
-//        databaseMapper.saveNowConfirmStatis(d3);
-
-//        List<SupperData> data4 = producer.getData(LocationRequestPram.provinceCompare.getCode());
-//        List<ProvinceCompare> d4 = data4.stream().map(iter -> (ProvinceCompare) iter).collect(Collectors.toList());
-//        databaseMapper.saveProvinceCompare(d4);
-
         List<SupperData> foreignData1 = producer.getForeignData(ForeignRequestPram.FAutoForeignList.getCode());
         List<FAutoforeignList> fd1 = foreignData1.stream().map(item -> (FAutoforeignList) item).collect(Collectors.toList());
         databaseMapper.deleteTable(mapTable.get(ForeignRequestPram.FAutoForeignList.getCode()));
@@ -96,7 +95,12 @@ public class Consumer{
         List<WomWorld> fd3 = foreignData3.stream().map(item -> (WomWorld) item).collect(Collectors.toList());
         databaseMapper.deleteTable(mapTable.get(ForeignRequestPram.WomWorld.getCode()));
         databaseMapper.saveWomWorld(fd3);
-        log.info("一次执行完毕");
+        log.info("本国一次执行完毕");
+
+        List<Covid19Deaths> dataFromDataCdcGov = producer.getDataFromDataCdcGov();
+        databaseMapper.deleteTable("covid19_deaths");
+        databaseMapper.saveDataFromDataCdcGov(dataFromDataCdcGov);
+        log.info("年龄数据执行一次完成！");
     }
 
 }

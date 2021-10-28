@@ -236,4 +236,38 @@
     <delete id="deleteTable" parameterType="java.lang.String">
         truncate table ${tableName}
     </delete>
+
+    <insert id="saveDataFromDataCdcGov" parameterType="java.util.List">
+        insert into covid19_deaths(
+                dataAsOf,
+                startDate,
+                endDate,
+                `group`,
+                state,
+                sex,
+                ageGroup,
+                covid19Deaths,
+                totalDeaths,
+                pneumoniaDeaths,
+                pneumoniaAndCovid19Deaths,
+                influenzaDeaths,
+                pneumoniaInfluenzaOrCovid) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.dataAsOf},
+            #{item.startDate},
+            #{item.endDate},
+            #{item.group},
+            #{item.state},
+            #{item.sex},
+            #{item.ageGroup},
+            #{item.covid19Deaths},
+            #{item.totalDeaths},
+            #{item.totalDeaths},
+            #{item.pneumoniaAndCovid19Deaths},
+            #{item.influenzaDeaths},
+            #{item.pneumoniaInfluenzaOrCovid}
+            )
+        </foreach>
+    </insert>
 </mapper>
