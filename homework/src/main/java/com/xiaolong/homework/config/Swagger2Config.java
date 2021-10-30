@@ -1,4 +1,4 @@
-package com.xiaolong.covid.config;
+package com.xiaolong.homework.config;
 
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;

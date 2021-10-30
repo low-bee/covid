@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.xiaolong.homework.dao.HomeworkMapper">
+    <select id="getCountrySet" resultType="java.lang.String">
+        select countryCode from who_covid19 group by countryCode;
+    </select>
+
+    <select id="getCountryAge" resultType="com.xiaolong.homework.bean.Covid19Deaths">
+        select * from covid19_deaths
+        where state=#{country}
+        and sex='All Sexes'
+        and `group`='By Total'
+    </select>
+</mapper>

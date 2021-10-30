@@ -1,4 +1,4 @@
-package com.xiaolong.covid;
+package com.xiaolong.homework;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,7 +21,6 @@ public class CovidApplication {
 	}
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(CovidApplication.class, args);
 	}
 
