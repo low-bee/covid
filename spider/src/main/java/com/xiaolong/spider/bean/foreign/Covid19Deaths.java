@@ -43,4 +43,10 @@ public class Covid19Deaths implements SupperData {
     private Integer pneumoniaInfluenzaOrCovid;
     @JsonProperty("footnote")
     private String footnote;
+    @JsonProperty("year")
+    private String year;
+    @JsonProperty("month")
+    private String month;
+    @JsonProperty("day")
+    private String day;
 }

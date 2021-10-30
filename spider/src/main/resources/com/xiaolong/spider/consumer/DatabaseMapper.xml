@@ -251,7 +251,10 @@
                 pneumoniaDeaths,
                 pneumoniaAndCovid19Deaths,
                 influenzaDeaths,
-                pneumoniaInfluenzaOrCovid) values
+                pneumoniaInfluenzaOrCovid,
+                year ,
+                month
+        ) values
         <foreach collection="list" item="item" index="index" separator=",">
             (
             #{item.dataAsOf},
@@ -266,7 +269,9 @@
             #{item.totalDeaths},
             #{item.pneumoniaAndCovid19Deaths},
             #{item.influenzaDeaths},
-            #{item.pneumoniaInfluenzaOrCovid}
+            #{item.pneumoniaInfluenzaOrCovid},
+            #{item.year},
+            #{item.month}
             )
         </foreach>
     </insert>

@@ -111,9 +111,11 @@ public class Producer {
     }
 
     public List<Covid19Deaths> getDataFromDataCdcGov(){
-        String url = "https://data.cdc.gov/resource/9bhg-hcku.json?$$app_token=" + new Config().getProperties().getProperty(Constant.SPIDER_FOREIGN_TOKEN);
-
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
+        StringBuilder url = new StringBuilder("https://data.cdc.gov/resource/9bhg-hcku.json?$$app_token=");
+        url.append(new Config().getProperties().getProperty(Constant.SPIDER_FOREIGN_TOKEN));
+        url.append("&$select=*");
+        url.append("&$limit=1000000");
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(url.toString(), String.class);
         JSONArray array = JsonUtil.string2JsonArray(forEntity.getBody());
 
         return array.stream().map(Object::toString)
