@@ -28,7 +28,8 @@ public class SpiderApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         try {
-            consumer.run();
+            consumer.runHourse();
+            consumer.runDay();
         } catch (Exception e){
             e.printStackTrace();
         }

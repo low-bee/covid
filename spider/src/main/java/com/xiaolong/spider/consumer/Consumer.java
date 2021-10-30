@@ -50,7 +50,7 @@ public class Consumer{
     // @PostConstruct
     @Transactional
     @Scheduled(cron = "0 */60 * * * ?")
-    public void run() {
+    public void runHourse() {
 //        List<SupperData> data3 = producer.getData(LocationRequestPram.nowConfirmStatis.getCode());
 //        List<NowConfirmStatis> d3 = data3.stream().map(iter -> (NowConfirmStatis) iter).collect(Collectors.toList());
 //        databaseMapper.saveNowConfirmStatis(d3);
@@ -99,6 +99,10 @@ public class Consumer{
         databaseMapper.saveWomWorld(fd3);
         log.info("本国一次执行完毕");
 
+    }
+
+    @Scheduled(cron = "0 0 1 * * *")
+    public void runDay(){
         List<Covid19Deaths> dataFromDataCdcGov = producer.getDataFromDataCdcGov();
         databaseMapper.deleteTable("covid19_deaths");
         databaseMapper.saveDataFromDataCdcGov(dataFromDataCdcGov);
