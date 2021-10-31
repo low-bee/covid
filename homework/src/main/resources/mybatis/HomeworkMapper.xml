@@ -3,7 +3,7 @@
 
 <mapper namespace="com.xiaolong.homework.dao.HomeworkMapper">
     <select id="getCountrySet" resultType="java.lang.String">
-        select countryCode from who_covid19 group by countryCode;
+        select countryCode from who_covid19 group by country;
     </select>
 
     <select id="getCountryAge" resultType="com.xiaolong.homework.bean.Covid19Deaths">

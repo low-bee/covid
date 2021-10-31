@@ -1,8 +1,7 @@
 package com.xiaolong.spider.consumer;
 
 import com.xiaolong.spider.bean.data.*;
-import com.xiaolong.spider.bean.foreign.Covid19Deaths;
-import com.xiaolong.spider.bean.foreign.WHOCovid19;
+import com.xiaolong.spider.bean.foreign.*;
 import com.xiaolong.spider.bean.supper.SupperData;
 import com.xiaolong.spider.dao.DatabaseMapper;
 import com.xiaolong.spider.enumc.ForeignRequestPram;
@@ -112,8 +111,25 @@ public class Consumer{
             final List<WHOCovid19> dataFromWHO = producer.getDataFromWHO();
             databaseMapper.deleteTable("who_covid19");
             databaseMapper.saveDataFromWHO(dataFromWHO);
+
+            List<FrenchCovidHospitalData> frenchCovidHospitalData = producer.getFrenchCovidHospitalData();
+            databaseMapper.deleteTable("french_covid_hospital_data");
+            databaseMapper.savaFrenchCovidHospitalData(frenchCovidHospitalData);
+
+            List<FrenchCovidAgeData> frenchCovidAgeData = producer.getFrenchCovidAgeData();
+            databaseMapper.deleteTable("french_covid_age_data");
+            databaseMapper.saveFrenchAgeData(frenchCovidAgeData);
+
+            List<FrenchLastDayNumberData> frenchLastDayNumberData = producer.getFrenchLastDayNumberData();
+            databaseMapper.deleteTable("french_last_day_number_data");
+            databaseMapper.saveFrenchLastDayNumberData(frenchLastDayNumberData);
+
         } catch (IOException e) {
             log.error("访问WHO数据失败！");
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }

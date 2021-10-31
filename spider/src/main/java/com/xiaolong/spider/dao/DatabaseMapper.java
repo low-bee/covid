@@ -1,12 +1,9 @@
 package com.xiaolong.spider.dao;
 
 import com.xiaolong.spider.bean.data.*;
-import com.xiaolong.spider.bean.foreign.Covid19Deaths;
-import com.xiaolong.spider.bean.foreign.WHOCovid19;
-import com.xiaolong.spider.bean.supper.SupperData;
+import com.xiaolong.spider.bean.foreign.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,4 +39,10 @@ public interface DatabaseMapper {
     void saveDataFromDataCdcGov(List<Covid19Deaths> dataFromDataCdcGov);
 
     void saveDataFromWHO(List<WHOCovid19> dataFromWHO);
+
+    void savaFrenchCovidHospitalData(List<FrenchCovidHospitalData> frenchCovidHospitalData);
+
+    void saveFrenchAgeData(List<FrenchCovidAgeData> frenchCovidAgeData);
+
+    void saveFrenchLastDayNumberData(List<FrenchLastDayNumberData> frenchLastDayNumberData);
 }

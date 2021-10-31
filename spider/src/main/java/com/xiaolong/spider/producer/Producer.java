@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xiaolong.spider.bean.foreign.Covid19Deaths;
-import com.xiaolong.spider.bean.foreign.WHOCovid19;
+import com.xiaolong.spider.bean.foreign.*;
 import com.xiaolong.spider.bean.supper.SupperData;
 import com.xiaolong.spider.config.Config;
 import com.xiaolong.spider.constant.Constant;
 import com.xiaolong.spider.util.JsonUtil;
 import com.xiaolong.spider.util.URLUtil;
-import org.apache.tomcat.jni.OS;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -20,14 +19,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.Proxy;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -129,28 +127,68 @@ public class Producer {
                 }).collect(Collectors.toList());
     }
 
-    public List<WHOCovid19> getDataFromWHO() throws IOException {
-        final URL url = new URL("https://covid19.who.int/WHO-COVID-19-global-data.csv");
-        final URLConnection urlConnection = url.openConnection();
+    public List<WHOCovid19> getDataFromWHO() throws IOException, InstantiationException, IllegalAccessException {
+        return getCSVFromURL("https://covid19.who.int/WHO-COVID-19-global-data.csv", WHOCovid19.class);
+
+    }
+
+    public List<FrenchCovidHospitalData> getFrenchCovidHospitalData() throws IOException, InstantiationException, IllegalAccessException {
+        return getCSVFromURL("https://www.data.gouv.fr/fr/datasets/r/63352e38-d353-4b54-bfd1-f1b3ee1cabd7", FrenchCovidHospitalData.class);
+    }
+
+    public List<FrenchCovidAgeData> getFrenchCovidAgeData() throws IOException, InstantiationException,IllegalAccessException{
+        return getCSVFromURL("https://www.data.gouv.fr/fr/datasets/r/08c18e08-6780-452d-9b8c-ae244ad529b3", FrenchCovidAgeData.class);
+    }
+
+    public List<FrenchLastDayNumberData> getFrenchLastDayNumberData() throws IOException, InstantiationException,IllegalAccessException{
+        return getCSVFromURL("https://www.data.gouv.fr/fr/datasets/r/a1466f7f-4ece-4158-a373-f5d4db167eb0", FrenchLastDayNumberData.class);
+    }
+
+
+    private <T> List<T> getCSVFromURL(String url, Class<T> clazz) throws IOException, InstantiationException, IllegalAccessException {
+        int n = clazz.getFields().length;
+        URL currURL = new URL(url);
+        URLConnection urlConnection = currURL.openConnection();
         urlConnection.addRequestProperty("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36");
-        urlConnection.addRequestProperty("cookie", "_gcl_au=1.1.1802247154.1635380733; _ga=GA1.2.1343273890.1635380733; _gid=GA1.2.757475202.1635380733; _clck=1k6lsh5|1|evy|0; _clsk=1y0je4|1635406599873|12|0|www.clarity.ms/eus2-b/collect");
-        urlConnection.addRequestProperty("referer", "https://covid19.who.int/info/");
-        final InputStream inputStream = urlConnection.getInputStream();
-        final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        List<WHOCovid19> ret = new ArrayList<>();
-        String current;
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+        List<T> ret = new ArrayList<>();
+        String curr;
         boolean vis = false;
-        while ((current = bufferedReader.readLine()) != null) {
+        while ((curr = bufferedReader.readLine()) != null){
             if (!vis){
                 vis = true;
                 continue;
             }
-            WHOCovid19 whoCovid19 = stringToWhoCovid19(current);
-            if (whoCovid19 != null) {
-                ret.add(whoCovid19);
-            }
+            ret.add(string2Clazz(clazz, curr));
         }
         return ret;
+    }
+
+    private <T> T string2Clazz(Class<T> clazz, String curr) throws InstantiationException, IllegalAccessException {
+        String[] split = curr.split(curr.contains(",") ? "," : ";");
+        T obj = clazz.newInstance();
+        HashMap<String, String> fieldValue = new HashMap<>();
+        int i = 0;
+        Field[] fields = clazz.getDeclaredFields();
+        while (i < fields.length){
+            Field field = fields[i];
+            field.setAccessible(true);
+            if (!"update".equals(field.getName())){
+                fieldValue.put(field.getName(), split[i]);
+            }
+            i++;
+        }
+        fieldValue.forEach(
+                (key, value) -> {
+                    try {
+                        BeanUtils.setProperty(obj, key, value);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                });
+        return obj;
     }
 
     private WHOCovid19 stringToWhoCovid19(String current) {
@@ -160,9 +198,9 @@ public class Producer {
         }
         WHOCovid19 whoCovid19 = new WHOCovid19();
         whoCovid19.setDateReported(split[0]);
-        whoCovid19.setCountry(split[1]);
-        whoCovid19.setCountryCode(split[2]);
-        whoCovid19.setWHORegion(split[3]);
+        whoCovid19.setCountryCode(split[1]);
+        whoCovid19.setCountry(split[2]);
+        whoCovid19.setWhoRegion(split[3]);
         whoCovid19.setNewCases(Integer.parseInt(split[4]));
         whoCovid19.setCumulativeCases(Integer.parseInt(split[5]));
         whoCovid19.setNewDeaths(Integer.parseInt(split[6]));
@@ -170,9 +208,8 @@ public class Producer {
         return whoCovid19;
     }
 
-    public static void main(String[] args) throws IOException {
-        final List<WHOCovid19> dataFromWHO = new Producer().getDataFromWHO();
-        System.out.println(dataFromWHO);
+    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
+        new Producer().getFrenchCovidHospitalData();
     }
 
 }

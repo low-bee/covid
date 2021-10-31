@@ -142,8 +142,7 @@ CREATE TABLE IF NOT EXISTS covid19_deaths(
 	`state` VARCHAR (50) DEFAULT '' COMMENT 'state',
 	sex VARCHAR (50)  DEFAULT '' COMMENT 'sex',
 	ageGroup VARCHAR (50) DEFAULT '' COMMENT 'ageGroup',
-	covid19Deaths INT  DEFAULT -1 COMMENT 'covid19Deaths',
-	totalDeaths INT  DEFAULT -1 COMMENT 'totalDeaths',
+	covid19Deaths INT  DEFAULT -1 COMMENT 'covid19Deaths',	totalDeaths INT  DEFAULT -1 COMMENT 'totalDeaths',
 	pneumoniaDeaths INT DEFAULT -1 COMMENT 'pneumoniaDeaths',
 	pneumoniaAndCovid19Deaths INT DEFAULT -1 COMMENT 'pneumoniaAndCovid19Deaths',
 	influenzaDeaths INT DEFAULT -1 COMMENT 'influenzaDeaths',
@@ -162,3 +161,42 @@ CREATE TABLE IF NOT EXISTS who_covid19(
 	newDeaths INT NOT NULL DEFAULT -1 COMMENT 'newDeaths',
 	cumulativeDeaths INT NOT NULL DEFAULT -1 COMMENT 'cumulativeDeaths'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'who_covid19';
+
+-- auto Generated on 2021-10-31
+-- DROP TABLE IF EXISTS french_covid_hospital_data;
+CREATE TABLE IF NOT EXISTS french_covid_hospital_data(
+	department VARCHAR(50) NOT NULL COMMENT '地区',
+	sex INT NOT NULL DEFAULT -1 COMMENT 'sex',
+	`date` VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'date',
+	hospitalized INT NOT NULL DEFAULT -1 COMMENT 'Number of people currently hospitalized',
+	resuscitation INT NOT NULL DEFAULT -1 COMMENT 'Number of people currently in resuscitation or critical care',
+	returnHome INT NOT NULL DEFAULT -1 COMMENT 'Total amount of patient that returned home',
+	dc INT NOT NULL DEFAULT -1 COMMENT 'Total amount of deaths at the hospital',
+	ssrOrUSLD INT NOT NULL DEFAULT -1 COMMENT '当前在ssr或者USLD服务中的人数（重症）',
+	hospconv INT NOT NULL DEFAULT -1 COMMENT '常规医院服务中的人数',
+	otherService INT NOT NULL DEFAULT -1 COMMENT '接受其他类型服务人数'
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'french_covid_hospital_data';
+
+-- auto Generated on 2021-10-31
+-- DROP TABLE IF EXISTS french_last_day_number_data;
+CREATE TABLE IF NOT EXISTS french_last_day_number_data(
+	`date` VARCHAR (50) NOT NULL COMMENT 'date',
+	regionName VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'Region name',
+	regionNumber INT (11) NOT NULL DEFAULT -1 COMMENT 'Region number',
+	lastDayIntensiveNumber INT (11) NOT NULL DEFAULT -1 COMMENT 'Number of new intensive care admissions in the last 24 hours'
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'french_last_day_number_data';
+
+-- auto Generated on 2021-10-31
+-- DROP TABLE IF EXISTS french_covid_age_data;
+CREATE TABLE IF NOT EXISTS french_covid_age_data(
+	region VARCHAR (50) NOT NULL COMMENT 'Region',
+	ageGroup VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'Age group',
+	dateOfNotice VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'Date of notice',
+	currHospitalized VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'Number of people currently hospitalized',
+	resuscitation VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'Number of people currently in resuscitation or critical care',
+	returnHome VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'Total amount of patient that returned home',
+	totalDeaths VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'Total amout of deaths',
+	ssrUsld VARCHAR (50) NOT NULL DEFAULT '' COMMENT 'ssr_usld 当前处在ssr和usld状态中的人（重症）',
+	hospconv INT NOT NULL DEFAULT -1 COMMENT '常规医院服务中的人数',
+	otherService INT (11) NOT NULL DEFAULT -1 COMMENT '接受其他类型服务人数'
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'french_covid_age_data';

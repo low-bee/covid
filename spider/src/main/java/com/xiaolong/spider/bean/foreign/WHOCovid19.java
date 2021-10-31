@@ -16,7 +16,7 @@ public class WHOCovid19 implements SupperData {
     private String dateReported;
     private String countryCode;
     private String country;
-    private String wHORegion;
+    private String whoRegion;
     private Integer newCases;
     private Integer cumulativeCases;
     private Integer newDeaths;

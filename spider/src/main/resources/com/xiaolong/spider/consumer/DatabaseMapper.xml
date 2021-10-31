@@ -291,11 +291,83 @@
             #{item.dateReported},
             #{item.countryCode},
             #{item.country},
-            #{item.wHORegion},
+            #{item.whoRegion},
             #{item.newCases},
             #{item.cumulativeCases},
             #{item.newDeaths},
             #{item.cumulativeDeaths}
+            )
+        </foreach>
+    </insert>
+    <insert id="savaFrenchCovidHospitalData" parameterType="java.util.List">
+        insert into french_covid_hospital_data(
+        department,
+        sex,
+        `date`,
+        hospitalized,
+        resuscitation,
+        returnHome,
+        dc,
+        ssrOrUSLD,
+        hospconv,
+        otherService) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+                #{item.department},
+                #{item.sex},
+                #{item.date},
+                #{item.hospitalized},
+                #{item.resuscitation},
+                #{item.returnHome},
+                #{item.dc},
+                #{item.ssrOrUSLD},
+                #{item.hospconv},
+                #{item.otherService}
+            )
+
+        </foreach>
+    </insert>
+    <insert id="saveFrenchAgeData" parameterType="java.util.List">
+        insert into french_covid_age_data(
+                region,
+                ageGroup,
+                dateOfNotice,
+                currHospitalized,
+                resuscitation,
+                returnHome,
+                totalDeaths,
+                ssrUsld,
+                hospconv,
+                otherService
+                ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+            #{item.region},
+            #{item.ageGroup},
+            #{item.dateOfNotice},
+            #{item.currHospitalized},
+            #{item.resuscitation},
+            #{item.returnHome},
+            #{item.totalDeaths},
+            #{item.ssrUsld},
+            #{item.hospconv},
+            #{item.otherService}
+            )
+        </foreach>
+    </insert>
+    <insert id="saveFrenchLastDayNumberData" parameterType="java.util.List">
+        insert into french_last_day_number_data(
+                date,
+                regionName,
+                regionNumber,
+                lastDayIntensiveNumber
+                ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.date},
+            #{item.regionName},
+            #{item.regionNumber},
+            #{item.lastDayIntensiveNumber}
             )
         </foreach>
     </insert>
