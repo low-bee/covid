@@ -1,5 +1,9 @@
 package com.xiaolong.homework.service;
 
+import com.xiaolong.homework.bean.WomWorldDataBo;
+import com.xiaolong.homework.bean.bo.CountryDeathsByAge;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,8 +26,11 @@ public interface HomeworkService {
      * @param country 国家名
      * @return 一个Map, key是年龄分段，value是对应的死亡数字
      */
-    Map<String, Integer> getAgeDeathsByCountry(String country);
+    List<CountryDeathsByAge> getAgeDeathsByCountry(String country);
 
-
-
+    /**
+     * 获取全球数据
+     * @return 当前全球数据对象
+     */
+    WomWorldDataBo getWorldData();
 }

@@ -2,14 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.xiaolong.homework.dao.HomeworkMapper">
+    <resultMap type="com.xiaolong.homework.bean.WomWorldDataBo" id="WorldMap">
+        <!--指定主键列的封装规则
+        id： 使用该标签，定义主键会底层有优化；当然也可以使用result。推荐使用id
+        column：指定数据库中哪一列
+        property：指定对应的javaBean属性
+          -->
+        <result column="pubDate" property="pubDate"/>
+        <!-- 定义普通列封装规则 -->
+        <result column="y" property="y"/>
+        <!-- 其他不指定的列会自动封装：但推荐写完整。 -->
+        <result column="date" property="date"/>
+        <result column="nowConfirm" property="nowConfirm"/>
+        <result column="nowConfirmAdd" property="nowConfirmAdd"/>
+        <result column="confirm" property="confirm"/>
+        <result column="confirmAdd" property="confirmAdd"/>
+        <result column="heal" property="heal"/>
+        <result column="healAdd" property="healAdd"/>
+        <result column="dead" property="dead"/>
+        <result column="curerate" property="curerate"/>
+        <result column="deathrate" property="deathrate"/>
+        <result column="lastUpdateTime" property="lastUpdateTime"/>
+    </resultMap>
+
     <select id="getCountrySet" resultType="java.lang.String">
-        select countryCode from who_covid19 group by country;
+        select country from who_covid19 group by country;
     </select>
 
-    <select id="getCountryAge" resultType="com.xiaolong.homework.bean.Covid19Deaths">
+    <select id="getCountryAge" resultType="com.xiaolong.homework.bean.Covid19Death">
         select * from covid19_deaths
         where state=#{country}
         and sex='All Sexes'
         and `group`='By Total'
+    </select>
+
+    <select id="getWomWorldData" resultType="com.xiaolong.homework.bean.WomWorldDataBo" resultMap="WorldMap">
+        select * from wom_world
+        limit 1
     </select>
 </mapper>

@@ -1,15 +1,15 @@
 package com.xiaolong.homework.service.Impl;
 
-import com.xiaolong.homework.bean.Covid19Deaths;
+import com.xiaolong.homework.bean.Covid19Death;
+import com.xiaolong.homework.bean.WomWorldDataBo;
+import com.xiaolong.homework.bean.bo.CountryDeathsByAge;
 import com.xiaolong.homework.dao.HomeworkMapper;
 import com.xiaolong.homework.service.HomeworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description: Homework Service 服务实现类
@@ -25,16 +25,26 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     @Override
     public Set<String> getCountrySet() {
-        return homeworkMapper.getCountrySet();
+        return homeworkMapper.getCountrySet().stream().filter(country ->
+            !country.contains("\"") && !country.contains("(")
+        ).collect(Collectors.toSet());
     }
 
     @Override
-    public Map<String, Integer> getAgeDeathsByCountry(String country) {
-        List<Covid19Deaths> covid19Deaths = homeworkMapper.getCountryAge(country);
-        HashMap<String, Integer> ret = new HashMap<>();
-        covid19Deaths.stream().forEach(covidDeath -> {
-            ret.put(covidDeath.getAgeGroup(), covidDeath.getCovid19Deaths());
+    public List<CountryDeathsByAge> getAgeDeathsByCountry(String country) {
+        List<Covid19Death> covid19Deaths = homeworkMapper.getCountryAge(country);
+        List<CountryDeathsByAge> ret = new ArrayList<>();
+        covid19Deaths.forEach(covidDeath -> {
+            CountryDeathsByAge temp = new CountryDeathsByAge();
+            temp.setAge(covidDeath.getAgeGroup());
+            temp.setDeathsNumber(String.valueOf(covidDeath.getCovid19Deaths()));
+            ret.add(temp);
         });
         return ret;
+    }
+
+    @Override
+    public WomWorldDataBo getWorldData() {
+        return homeworkMapper.getWomWorldData();
     }
 }

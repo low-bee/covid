@@ -1,6 +1,7 @@
 package com.xiaolong.homework.dao;
 
-import com.xiaolong.homework.bean.Covid19Deaths;
+import com.xiaolong.homework.bean.Covid19Death;
+import com.xiaolong.homework.bean.WomWorldDataBo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,7 @@ public interface HomeworkMapper {
 
     Set<String> getCountrySet();
 
-    List<Covid19Deaths> getCountryAge(String country);
+    List<Covid19Death> getCountryAge(String country);
 
+    WomWorldDataBo getWomWorldData();
 }

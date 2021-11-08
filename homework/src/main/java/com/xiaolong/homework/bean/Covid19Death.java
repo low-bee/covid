@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
-public class Covid19Deaths {
+public class Covid19Death {
     @JsonProperty("data_as_of")
     private String dataAsOf;
     @JsonProperty("start_date")
