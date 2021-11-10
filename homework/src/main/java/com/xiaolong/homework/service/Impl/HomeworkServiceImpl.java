@@ -2,6 +2,7 @@ package com.xiaolong.homework.service.Impl;
 
 import com.xiaolong.homework.bean.Covid19Death;
 import com.xiaolong.homework.bean.WomWorldDataBo;
+import com.xiaolong.homework.bean.bo.ContinentStatus;
 import com.xiaolong.homework.bean.bo.CountryDeathsByAge;
 import com.xiaolong.homework.dao.HomeworkMapper;
 import com.xiaolong.homework.service.HomeworkService;
@@ -46,5 +47,10 @@ public class HomeworkServiceImpl implements HomeworkService {
     @Override
     public WomWorldDataBo getWorldData() {
         return homeworkMapper.getWomWorldData();
+    }
+
+    @Override
+    public List<ContinentStatus> getContinentStatus() {
+        return homeworkMapper.getContinentStatus();
     }
 }

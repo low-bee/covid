@@ -1,6 +1,7 @@
 package com.xiaolong.homework.service;
 
 import com.xiaolong.homework.bean.WomWorldDataBo;
+import com.xiaolong.homework.bean.bo.ContinentStatus;
 import com.xiaolong.homework.bean.bo.CountryDeathsByAge;
 
 import java.util.List;
@@ -33,4 +34,10 @@ public interface HomeworkService {
      * @return 当前全球数据对象
      */
     WomWorldDataBo getWorldData();
+    /**
+     * 获取每一个大洲的数据
+     *
+     */
+
+    List<ContinentStatus> getContinentStatus();
 }

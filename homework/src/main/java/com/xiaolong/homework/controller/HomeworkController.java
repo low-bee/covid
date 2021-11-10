@@ -1,6 +1,7 @@
 package com.xiaolong.homework.controller;
 
 import com.xiaolong.homework.bean.WomWorldDataBo;
+import com.xiaolong.homework.bean.bo.ContinentStatus;
 import com.xiaolong.homework.bean.bo.CountryDeathsByAge;
 import com.xiaolong.homework.service.HomeworkService;
 import io.swagger.annotations.ApiOperation;
@@ -47,5 +48,13 @@ public class HomeworkController {
     @GetMapping("/world")
     public WomWorldDataBo getWorldData(){
         return homeworkService.getWorldData();
+    }
+
+    // 返回大洲数据
+    // 返回世界数据
+    @ApiOperation("world")
+    @GetMapping("/world/continent")
+    public List<ContinentStatus> getContinentStatus(){
+        return homeworkService.getContinentStatus();
     }
 }

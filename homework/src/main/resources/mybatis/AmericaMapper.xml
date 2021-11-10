@@ -57,4 +57,30 @@
             </if>
         limit 100
     </select>
+    <select id="queryRegion" resultType="com.xiaolong.homework.bean.bo.CountryDeathsByRegion">
+        select
+            `name`,
+            `date`,
+            nameMap,
+            confirm,
+            dead,
+            heal
+        from foreign_province
+
+        where 1=1
+        <if test="queryAmericaDeadRegionBo != null and queryAmericaDeadRegionBo.country != null">
+            AND country=#{queryAmericaDeadRegionBo.country}
+        </if>
+        <if test="queryAmericaDeadRegionBo != null and queryAmericaDeadRegionBo.date != null ">
+            AND `date`=#{queryAmericaDeadRegionBo.date}
+        </if>
+        <if test="queryAmericaDeadRegionBo != null and queryAmericaDeadRegionBo.name != null ">
+            AND `name`=#{queryAmericaDeadRegionBo.name}
+        </if>
+        <if test="queryAmericaDeadRegionBo != null and queryAmericaDeadRegionBo.nameMap != null ">
+            AND `nameMap`=#{queryAmericaDeadRegionBo.nameMap}
+        </if>
+
+
+    </select>
 </mapper>

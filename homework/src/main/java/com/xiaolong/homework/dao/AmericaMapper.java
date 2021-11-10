@@ -1,7 +1,9 @@
 package com.xiaolong.homework.dao;
 
 import com.xiaolong.homework.bean.Covid19Death;
+import com.xiaolong.homework.bean.bo.CountryDeathsByRegion;
 import com.xiaolong.homework.bean.bo.QueryAmericaDeadBo;
+import com.xiaolong.homework.bean.bo.QueryAmericaDeadRegionBo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,4 +19,6 @@ import java.util.List;
 @Repository
 public interface AmericaMapper {
     List<Covid19Death> query(@Param("queryAmericaDeadBo") QueryAmericaDeadBo queryAmericaDeadBo);
+
+    List<CountryDeathsByRegion> queryRegion(@Param("queryAmericaDeadRegionBo") QueryAmericaDeadRegionBo queryAmericaDeadRegionBo);
 }

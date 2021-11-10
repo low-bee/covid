@@ -40,4 +40,17 @@
         select * from wom_world
         limit 1
     </select>
+    <select id="getContinentStatus" resultType="com.xiaolong.homework.bean.bo.ContinentStatus">
+        select
+            continent,
+            sum(confirm) as confirm,
+            sum(confirmAdd) as confirmAdd,
+            sum(dead) as dead,
+            sum(deadCompare) as deadCompare,
+            sum(heal) as heal,
+            sum(healCompare) as healCompare
+        from wom_aboard
+        where continent != ''
+        group by continent;
+    </select>
 </mapper>
